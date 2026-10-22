@@ -80,14 +80,15 @@ header .subtitle{color:var(--text-dim);font-size:.72rem;letter-spacing:8px;text-
 .defense-pool .label{font-size:.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px}
 .defense-pool .value{font-family:'Amiri',serif;font-size:1.5rem;color:var(--gold-bright);font-weight:700}
 .defense-pool .value.sufficient{color:#7ac07a;text-shadow:0 0 10px #4a7a4a}
+.defense-pool .value.pride{color:var(--text-dim);text-shadow:none}
 .ready-msg{text-align:center;color:#7ac07a;font-weight:600;margin-top:6px;font-size:.95rem;letter-spacing:1px}
 .no-temptation{text-align:center;padding:24px 16px;color:var(--text-dim);font-style:italic;background:var(--surface);border:1px solid var(--border);border-radius:8px}
 
 .actions-panel{display:flex;flex-direction:column;gap:6px}
-.btn{font-family:'Cormorant Garamond',serif;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:4px;cursor:pointer;font-size:.95rem;transition:all .2s;text-align:left;display:flex;justify-content:space-between;align-items:center}
+.btn{font-family:'Cormorant Garamond',serif;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:4px;cursor:pointer;font-size:.95rem;transition:all .2s;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .btn:hover:not(:disabled){background:var(--surface);border-color:var(--gold-dim);transform:translateX(2px)}
 .btn:disabled{opacity:.35;cursor:not-allowed}
-.btn .cost{color:var(--gold);font-size:.78rem}
+.btn .cost{color:var(--gold);font-size:.78rem;white-space:nowrap}
 .btn.primary{background:linear-gradient(135deg,#4a3a10,#2a1e08);border-color:var(--gold-dim);color:var(--gold-bright);font-weight:600;justify-content:center}
 .btn.primary:hover:not(:disabled){background:linear-gradient(135deg,#6a4a10,#3a2e08);box-shadow:0 0 15px rgba(201,162,39,.3)}
 
@@ -98,13 +99,38 @@ header .subtitle{color:var(--text-dim);font-size:.72rem;letter-spacing:8px;text-
 .hand-panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px}
 .hand-label{font-size:.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
 .hand{display:flex;gap:6px;flex-wrap:wrap;min-height:110px}
-.virtue-card{width:88px;height:118px;background:linear-gradient(160deg,#2a2418,#1a160e);border:1px solid var(--gold-dim);border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;cursor:pointer;transition:all .2s;user-select:none}
+.virtue-card{width:88px;height:118px;background:linear-gradient(160deg,#2a2418,#1a160e);border:1px solid var(--gold-dim);border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;cursor:pointer;transition:all .2s;user-select:none;position:relative}
 .virtue-card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 6px 20px rgba(201,162,39,.2)}
 .virtue-card.played{border-color:var(--gold-bright);background:linear-gradient(160deg,#4a3a18,#2a2008);box-shadow:0 0 20px rgba(232,192,74,.4);transform:translateY(-6px)}
 .virtue-card .v-arabic{font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold)}
 .virtue-card .v-name{font-size:.72rem;color:var(--text);text-align:center;line-height:1.15}
 .virtue-card .v-light{font-family:'Amiri',serif;font-size:1rem;color:var(--gold-bright);font-weight:700}
 .virtue-card .v-light::before{content:'✦ ';font-size:.65rem}
+
+/* Цветовая система */
+.virtue-card[data-q="razum"]         { border-color: #7aaac8; }
+.virtue-card[data-q="gnev"]          { border-color: #c87070; }
+.virtue-card[data-q="zhelanie"]      { border-color: #c8a070; }
+.virtue-card[data-q="voobrazhenie"]  { border-color: #a07ac8; }
+
+.virtue-card[data-q="razum"]         .v-arabic { color: #7aaac8; }
+.virtue-card[data-q="gnev"]          .v-arabic { color: #c87070; }
+.virtue-card[data-q="zhelanie"]      .v-arabic { color: #c8a070; }
+.virtue-card[data-q="voobrazhenie"]  .v-arabic { color: #a07ac8; }
+
+.virtue-card.not-matching{opacity:.55;filter:grayscale(35%)}
+.virtue-card.not-matching:hover{opacity:.85;filter:grayscale(0%)}
+
+.virtue-card .v-penalty{position:absolute;top:3px;right:3px;font-size:.68rem;color:#e06060;font-family:'Amiri',serif;font-weight:700;background:rgba(0,0,0,.55);padding:1px 4px;border-radius:3px}
+.virtue-card .v-light .v-base{font-size:.68em;color:var(--text-dim);text-decoration:line-through;margin-left:3px}
+
+.color-swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:4px;vertical-align:middle;border:1px solid rgba(255,255,255,.25)}
+
+.token[data-q="razum"]        { background: #7aaac8; box-shadow: 0 0 6px #7aaac8; }
+.token[data-q="gnev"]         { background: #c87070; box-shadow: 0 0 6px #c87070; }
+.token[data-q="zhelanie"]     { background: #c8a070; box-shadow: 0 0 6px #c8a070; }
+.token[data-q="voobrazhenie"] { background: #a07ac8; box-shadow: 0 0 6px #a07ac8; }
+
 @media(max-width:900px){
   .virtue-card{width:72px;height:98px}
   .virtue-card .v-arabic{font-size:.95rem}
@@ -135,27 +161,40 @@ header .subtitle{color:var(--text-dim);font-size:.72rem;letter-spacing:8px;text-
   <div class="stats-bar">
     <div><span class="stat-label">Цикл</span> <span class="stat-value" id="cycleDisplay">1 / 7</span></div>
     <div><span class="stat-label">Барака</span> <span class="stat-value" id="barakaDisplay">3</span></div>
+    <div><span class="stat-label">ОД</span> <span class="stat-value" id="apDisplay">3 / 3</span></div>
     <div><span class="stat-label">Прямой Путь</span> <span class="stat-value" id="pathDisplay">0</span></div>
   </div>
 
   <div class="main-grid">
     <div class="city-panel city" id="city">
-      <div class="quarter" data-q="razum"><div class="arabic">عقل</div><div class="name">Разум</div><div class="tokens" data-tokens="razum"></div></div>
-      <div class="quarter" data-q="voobrazhenie"><div class="arabic">خيال</div><div class="name">Воображение</div><div class="tokens" data-tokens="voobrazhenie"></div></div>
+      <div class="quarter" data-q="razum">
+        <div class="arabic">عقل</div><div class="name">Разум</div>
+        <div class="tokens" data-tokens="razum"></div>
+      </div>
+      <div class="quarter" data-q="voobrazhenie">
+        <div class="arabic">خيال</div><div class="name">Воображение</div>
+        <div class="tokens" data-tokens="voobrazhenie"></div>
+      </div>
       <div class="heart" id="heart">
         <div class="heart-orb">♥</div>
         <div class="path-label">Прямой Путь</div>
         <div class="path-value" id="pathValue">0</div>
         <div class="path-track"><div class="path-fill" id="pathFill" style="width:0%"></div><div class="path-center"></div></div>
       </div>
-      <div class="quarter" data-q="gnev"><div class="arabic">غضب</div><div class="name">Гнев</div><div class="tokens" data-tokens="gnev"></div></div>
-      <div class="quarter" data-q="zhelanie"><div class="arabic">شهوة</div><div class="name">Желание</div><div class="tokens" data-tokens="zhelanie"></div></div>
+      <div class="quarter" data-q="gnev">
+        <div class="arabic">غضب</div><div class="name">Гнев</div>
+        <div class="tokens" data-tokens="gnev"></div>
+      </div>
+      <div class="quarter" data-q="zhelanie">
+        <div class="arabic">شهوة</div><div class="name">Желание</div>
+        <div class="tokens" data-tokens="zhelanie"></div>
+      </div>
     </div>
 
     <div class="temptation-panel" id="temptationPanel"></div>
     <div class="actions-panel" id="actions"></div>
     <div class="hand-panel">
-      <div class="hand-label" id="handLabel">Добродетели — нажмите, чтобы применить</div>
+      <div class="hand-label" id="handLabel">Добродетели</div>
       <div class="hand" id="hand"></div>
     </div>
     <div class="log-panel" id="log"></div>
@@ -167,50 +206,78 @@ header .subtitle{color:var(--text-dim);font-size:.72rem;letter-spacing:8px;text-
 </div>
 
 <script>
-// ── Данные игры: добродетели, искушения, константы ──
+// ── Данные игры ──
 
 const VIRTUES = [
-  { id: 'sabr',      name: 'Терпение',      arabic: 'صبر',    light: 2 },
-  { id: 'shukr',     name: 'Благодарность', arabic: 'شكر',    light: 2 },
-  { id: 'tawakkul',  name: 'Упование',      arabic: 'توكل',   light: 3 },
-  { id: 'ikhlas',    name: 'Искренность',   arabic: 'إخلاص',  light: 3 },
-  { id: 'zikr',      name: 'Память',        arabic: 'ذكر',    light: 2 },
-  { id: 'mahabbat',  name: 'Любовь',        arabic: 'محبة',   light: 3 },
-  { id: 'tawadu',    name: 'Смирение',      arabic: 'تواضع',  light: 2 },
-  { id: 'sidq',      name: 'Правдивость',   arabic: 'صدق',    light: 2 }
+  // 🔵 Разум (синий)
+  { id:'sidq',   name:'Правдивость', arabic:'صدق',   light:2, quarter:'razum' },
+  { id:'ilm',    name:'Знание',      arabic:'علم',   light:2, quarter:'razum' },
+  { id:'hikma',  name:'Мудрость',    arabic:'حكمة',  light:3, quarter:'razum' },
+  // 🔴 Гнев (красный)
+  { id:'sabr',   name:'Терпение',    arabic:'صبر',   light:2, quarter:'gnev' },
+  { id:'tawadu', name:'Смирение',    arabic:'تواضع', light:2, quarter:'gnev' },
+  { id:'hilm',   name:'Кротость',    arabic:'حلم',   light:3, quarter:'gnev' },
+  // 🟠 Желание (оранжевый)
+  { id:'shukr',  name:'Благодарность', arabic:'شكر', light:2, quarter:'zhelanie' },
+  { id:'tawakkul',name:'Упование',   arabic:'توكل',  light:3, quarter:'zhelanie' },
+  { id:'wara',   name:'Воздержание', arabic:'ورع',   light:2, quarter:'zhelanie' },
+  // 🟣 Воображение (фиолетовый)
+  { id:'ikhlas', name:'Искренность', arabic:'إخلاص', light:3, quarter:'voobrazhenie' },
+  { id:'zikr',   name:'Память',      arabic:'ذكر',   light:2, quarter:'voobrazhenie' },
+  { id:'raja',   name:'Надежда',     arabic:'رجاء',  light:2, quarter:'voobrazhenie' }
 ];
 
 const TEMPTATIONS = [
-  { name: 'Гордыня',       arabic: 'كِبر', power: 4, quarter: 'razum',        desc: 'Мысль, что ты лучше других' },
-  { name: 'Зависть',       arabic: 'حسد',  power: 5, quarter: 'zhelanie',     desc: 'Желание чужого блага' },
-  { name: 'Гнев',          arabic: 'غضب',  power: 5, quarter: 'gnev',         desc: 'Ярость, требующая выхода' },
-  { name: 'Мечтательность',arabic: 'خيال', power: 3, quarter: 'voobrazhenie', desc: 'Уход в иллюзии' },
-  { name: 'Сребролюбие',   arabic: 'طمع',  power: 4, quarter: 'zhelanie',     desc: 'Жажда наживы' },
-  { name: 'Тщеславие',     arabic: 'رياء', power: 4, quarter: 'razum',        desc: 'Показная праведность' },
-  { name: 'Сомнение',      arabic: 'شك',   power: 4, quarter: 'voobrazhenie', desc: 'Подтачивает веру' },
-  { name: 'Отчаяние',      arabic: 'يأس',  power: 5, quarter: 'razum',        desc: 'Потеря надежды' },
-  { name: 'Похоть',        arabic: 'شهوة', power: 4, quarter: 'zhelanie',     desc: 'Слепая страсть' },
-  { name: 'Жестокость',    arabic: 'قسوة', power: 5, quarter: 'gnev',         desc: 'Черствость сердца' },
-  { name: 'Лень',          arabic: 'كسل',  power: 3, quarter: 'voobrazhenie', desc: 'Уклонение от усилия' },
-  { name: 'Уныние',        arabic: 'هم',   power: 4, quarter: 'razum',        desc: 'Тяжесть на сердце' }
+  // Разум
+  { name:'Гордыня',        arabic:'كِبر', power:3, quarter:'razum',        desc:'Мысль, что ты лучше других' },
+  { name:'Тщеславие',      arabic:'رياء', power:4, quarter:'razum',        desc:'Показная праведность' },
+  { name:'Отчаяние',       arabic:'يأس',  power:4, quarter:'razum',        desc:'Потеря надежды' },
+  // Гнев
+  { name:'Гнев',           arabic:'غضب',  power:4, quarter:'gnev',         desc:'Ярость, требующая выхода' },
+  { name:'Жестокость',     arabic:'قسوة', power:4, quarter:'gnev',         desc:'Черствость сердца' },
+  { name:'Уныние',         arabic:'هم',   power:3, quarter:'gnev',         desc:'Тяжесть на сердце' },
+  // Желание
+  { name:'Зависть',        arabic:'حسد',  power:4, quarter:'zhelanie',     desc:'Желание чужого блага' },
+  { name:'Сребролюбие',    arabic:'طمع',  power:3, quarter:'zhelanie',     desc:'Жажда наживы' },
+  { name:'Похоть',         arabic:'شهوة', power:3, quarter:'zhelanie',     desc:'Слепая страсть' },
+  // Воображение
+  { name:'Мечтательность', arabic:'خيال', power:2, quarter:'voobrazhenie', desc:'Уход в иллюзии' },
+  { name:'Сомнение',       arabic:'شك',   power:3, quarter:'voobrazhenie', desc:'Подтачивает веру' },
+  { name:'Лень',           arabic:'كسل',  power:2, quarter:'voobrazhenie', desc:'Уклонение от усилия' }
 ];
 
 const QUARTER_NAMES = {
-  razum: 'Разум',
-  gnev: 'Гнев',
-  zhelanie: 'Желание',
-  voobrazhenie: 'Воображение'
+  razum:'Разум', gnev:'Гнев', zhelanie:'Желание', voobrazhenie:'Воображение'
 };
 
-// Баланс
-const HAND_LIMIT = 10;      // максимум карт в руке
-const START_HAND = 5;       // стартовых карт
-const CARD_PER_CYCLE = 1;   // доход в начале цикла
-const CARD_ON_SUCCESS = 2;  // награда за отбитую атаку
+const QUARTER_COLORS = {
+  razum:        { name:'синий',      hex:'#7aaac8' },
+  gnev:         { name:'красный',    hex:'#c87070' },
+  zhelanie:     { name:'оранжевый',  hex:'#c8a070' },
+  voobrazhenie: { name:'фиолетовый', hex:'#a07ac8' }
+};
+
+// Эффективный свет: полный при совпадении цвета, −1 иначе
+function effectiveLight(card, quarter) {
+  if (!card) return 0;
+  if (!quarter || card.quarter === quarter) return card.light;
+  return Math.max(0, card.light - 1);
+}
+
+// Баланс (сжатая экономика)
+const HAND_LIMIT = 8;         // лимит руки
+const START_HAND = 4;         // стартовая рука
+const CARD_PER_CYCLE = 1;     // доход в начале цикла
+const CARD_ON_SUCCESS = 1;    // награда за точное отбитие
+
+// Очки Действия
+const START_AP = 3;
+const AP_CARD = 1;
+const AP_ACTION = 1;
 
 // Сохранение
 const SAVE_KEY = 'city-of-heart-save';
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 4;
 </script>
 <script>
 // ── Состояние игры + сохранение ──
@@ -223,6 +290,7 @@ function initState() {
     maxCycles: 7,
     baraka: 3,
     straightPath: 0,
+    ap: START_AP,
     hand: [],
     played: [],
     quarters: { razum: 0, gnev: 0, zhelanie: 0, voobrazhenie: 0 },
@@ -237,7 +305,18 @@ function initState() {
 
 function drawCard(log = false) {
   if (state.hand.length >= HAND_LIMIT) return false;
-  const v = VIRTUES[Math.floor(Math.random() * VIRTUES.length)];
+
+  // Умная выдача: если какого-то цвета нет в руке — тянем именно его
+  let pool = VIRTUES;
+  const counts = { razum: 0, gnev: 0, zhelanie: 0, voobrazhenie: 0 };
+  state.hand.forEach(c => counts[c.quarter]++);
+  const missing = Object.keys(counts).filter(q => counts[q] === 0);
+  if (missing.length > 0) {
+    const pick = missing[Math.floor(Math.random() * missing.length)];
+    pool = VIRTUES.filter(v => v.quarter === pick);
+  }
+
+  const v = pool[Math.floor(Math.random() * pool.length)];
   state.hand.push({ ...v, uid: Date.now() + Math.random() });
   if (log) addLog(`Получена добродетель: ${v.name}`, 'neutral');
   return true;
@@ -256,7 +335,7 @@ function rand(arr) {
 function saveGame() {
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({ version: SAVE_VERSION, state }));
-  } catch (e) { /* private mode / quota — игнорируем */ }
+  } catch (e) { /* private mode / quota */ }
 }
 
 function loadGame() {
@@ -279,37 +358,52 @@ function clearSave() {
 }
 </script>
 <script>
-// ── Игровая логика: действия игрока и ходы ──
+// ── Игровая логика ──
 
 function startCycle() {
   state.played = [];
   state.lastResult = null;
+  state.ap = START_AP;
   for (let i = 0; i < CARD_PER_CYCLE; i++) drawCard(false);
+  // Страховка: рука пуста — один бесплатный добор
+  if (state.hand.length === 0) {
+    drawCard(false);
+    addLog('Рука пуста — дарован один бесплатный добор', 'neutral');
+  }
   const t = rand(TEMPTATIONS);
   state.currentTemptation = t;
   state.phase = 'temptation';
   addLog(`— Цикл ${state.cycle} —`, 'gold');
-  addLog(`Искушение: ${t.name} атакует ${QUARTER_NAMES[t.quarter]}`, 'bad');
+  addLog(`Искушение: ${t.name} атакует ${QUARTER_NAMES[t.quarter]} (сила ${t.power})`, 'bad');
   renderAll();
 }
 
 function resolveTemptation() {
   if (state.phase !== 'temptation') return;
-  const defense = state.played.reduce((s, c) => s + c.light, 0);
   const t = state.currentTemptation;
-  const success = defense >= t.power;
+  const defense = state.played.reduce((s, c) => s + effectiveLight(c, t.quarter), 0);
+  const needMin = t.power;
+  const needMax = t.power + 1;
 
-  if (success) {
-    state.baraka += 1;
-    for (let i = 0; i < CARD_ON_SUCCESS; i++) drawCard(false);
-    addLog(`✓ Отбито: ${t.name} (${defense} ✦ против ${t.power}) — +1 Барака, +${CARD_ON_SUCCESS} карты`, 'good');
-  } else {
+  let outcome;
+  if (defense < needMin) outcome = 'fail';
+  else if (defense <= needMax) outcome = 'exact';
+  else outcome = 'pride';
+
+  if (outcome === 'fail') {
     state.straightPath -= 1;
     state.quarters[t.quarter] = Math.min(3, state.quarters[t.quarter] + 1);
-    addLog(`✗ Пробито: ${t.name} (${defense} ✦ против ${t.power}) — −1 Прямой Путь`, 'bad');
+    addLog(`✗ Пробито: ${t.name} (${defense} ✦ против ${needMin}–${needMax}) — −1 Прямой Путь`, 'bad');
+  } else if (outcome === 'exact') {
+    state.baraka += 1;
+    for (let i = 0; i < CARD_ON_SUCCESS; i++) drawCard(false);
+    addLog(`✓ Точно отбито: ${t.name} (${defense} ✦) — +1 Барака, +${CARD_ON_SUCCESS} карта`, 'good');
+  } else {
+    drawCard(false);
+    addLog(`◈ Гордыня: ${t.name} отбито с перебором (${defense} ✦) — только +1 карта, без Бараки`, 'neutral');
   }
 
-  state.lastResult = { success, temptation: t, defense };
+  state.lastResult = { success: outcome !== 'fail', outcome, temptation: t, defense };
   state.played = [];
   state.phase = 'resolved';
 
@@ -357,22 +451,27 @@ function restart() {
 
 function playCard(uid) {
   if (state.phase !== 'temptation') return;
+  if (state.ap < AP_CARD) return;
   const idx = state.hand.findIndex(c => c.uid === uid);
   if (idx === -1) return;
+  state.ap -= AP_CARD;
   state.played.push(state.hand.splice(idx, 1)[0]);
   renderAll();
 }
 
 function unplayCard(uid) {
+  if (state.phase !== 'temptation') return;
   const idx = state.played.findIndex(c => c.uid === uid);
   if (idx === -1) return;
   if (state.hand.length >= HAND_LIMIT) return;
+  state.ap += AP_CARD;
   state.hand.push(state.played.splice(idx, 1)[0]);
   renderAll();
 }
 
 function helpNeighbor() {
-  if (state.phase !== 'temptation' || state.baraka < 2) return;
+  if (state.phase !== 'temptation' || state.baraka < 2 || state.ap < AP_ACTION) return;
+  state.ap -= AP_ACTION;
   state.baraka -= 2;
   state.straightPath += 1;
   drawCard(false);
@@ -382,7 +481,8 @@ function helpNeighbor() {
 }
 
 function performZikr() {
-  if (state.phase !== 'temptation' || state.baraka < 1 || state.hand.length === 0) return;
+  if (state.phase !== 'temptation' || state.baraka < 1 || state.hand.length === 0 || state.ap < AP_ACTION) return;
+  state.ap -= AP_ACTION;
   state.baraka -= 1;
   const idx = Math.floor(Math.random() * state.hand.length);
   const lost = state.hand.splice(idx, 1)[0];
@@ -400,7 +500,8 @@ function performZikr() {
 }
 
 function fightKarin() {
-  if (state.phase !== 'temptation' || state.baraka < 2) return;
+  if (state.phase !== 'temptation' || state.baraka < 2 || state.ap < AP_ACTION) return;
+  state.ap -= AP_ACTION;
   state.baraka -= 2;
   const roll = Math.floor(Math.random() * 6) + 1;
   if (roll >= 4) {
@@ -418,11 +519,11 @@ function showHelp() {
   oc.innerHTML = `
     <h2>Как играть</h2>
     <ul>
-      <li><b>1.</b> Сверху появилось <b>искушение</b> — у него есть <b>Сила</b> и <b>цель</b> (квартал).</li>
-      <li><b>2.</b> Ниже — <b>карты Добродетелей</b>. Нажимайте на них — их «свет» (число со ✦) идёт в «Защиту».</li>
-      <li><b>3.</b> Когда <b>Защита ≥ Силы</b> — нажмите <b>«Отразить атаку»</b>. Успех: +1 Барака, +2 карты. Провал: −1 Прямой Путь и тёмный жетон.</li>
-      <li><b>4.</b> Кнопки <b>«Помочь ближнему»</b>, <b>«Зикр»</b>, <b>«Борьба с Карином»</b> — полезные действия за Бараку.</li>
-      <li><b>5.</b> Всего <b>7 циклов</b>. Победа — если Прямой Путь не упал ниже −3. Досрочно: до +7 (озарение) или −7 (поражение).</li>
+      <li><b>1.</b> Сверху появилось <b>искушение</b> — у него есть <b>точный диапазон</b> силы и цвет врат.</li>
+      <li><b>2.</b> Цвет важен: карта того же цвета даёт <b>полную силу</b>, другого — <b>−1</b>.</li>
+      <li><b>3.</b> <b>ОД (очки действия):</b> ${START_AP} за цикл. Карта = ${AP_CARD} ОД, полезные действия = ${AP_ACTION} ОД.</li>
+      <li><b>4.</b> <b>Точность:</b> недобор — провал. Попадание в диапазон (Сила или Сила+1) — полная награда (+1 Барака, +${CARD_ON_SUCCESS} карта). Перебор на 2+ — <b>гордыня</b>: только +1 карта, без Бараки.</li>
+      <li><b>5.</b> Всего <b>7 циклов</b>. Победа — Прямой Путь не ниже −3. Досрочно: +7 (озарение) или −7 (поражение).</li>
     </ul>
     <button class="btn primary" onclick="document.getElementById('overlay').classList.add('hidden')">Понятно</button>
   `;
@@ -445,6 +546,7 @@ function renderAll() {
 function renderStats() {
   document.getElementById('cycleDisplay').textContent = `${Math.min(state.cycle, state.maxCycles)} / ${state.maxCycles}`;
   document.getElementById('barakaDisplay').textContent = state.baraka;
+  document.getElementById('apDisplay').textContent = `${state.ap} / ${START_AP}`;
   const p = state.straightPath;
   const txt = p > 0 ? '+' + p : (p < 0 ? String(p) : '0');
   document.getElementById('pathDisplay').textContent = txt;
@@ -468,6 +570,7 @@ function renderCity() {
     for (let i = 0; i < state.quarters[q]; i++) {
       const t = document.createElement('div');
       t.className = 'token';
+      t.dataset.q = q;
       cont.appendChild(t);
     }
   });
@@ -475,21 +578,31 @@ function renderCity() {
 
 function renderTemptation() {
   const panel = document.getElementById('temptationPanel');
-  const defense = state.played.reduce((s, c) => s + c.light, 0);
 
   if (state.phase === 'over') { panel.innerHTML = `<div class="no-temptation">Игра завершена</div>`; return; }
 
   if (state.phase === 'resolved' && state.lastResult) {
     const r = state.lastResult;
+    const border = r.success
+      ? (r.outcome === 'exact' ? 'var(--gold-dim)' : 'var(--text-dim)')
+      : 'var(--blood)';
+    const text = r.outcome === 'fail'
+      ? 'Искушение проникло в город...'
+      : r.outcome === 'exact'
+        ? 'Атака отбита. Сердце спокойно.'
+        : 'Отбито с перебором — гордыня коснулась сердца.';
+    const textColor = r.outcome === 'fail'
+      ? 'var(--blood-bright)'
+      : r.outcome === 'exact'
+        ? 'var(--gold-bright)'
+        : 'var(--text-dim)';
     panel.innerHTML = `
-      <div class="temptation-card" style="border-color:${r.success ? 'var(--gold-dim)' : 'var(--blood)'}">
+      <div class="temptation-card" style="border-color:${border}">
         <div class="arabic" style="color:${r.success ? 'var(--gold)' : 'var(--blood-bright)'}">${r.temptation.arabic}</div>
         <div class="name">${r.temptation.name}</div>
         <div class="desc">${r.defense} ✦ против ${r.temptation.power}</div>
       </div>
-      <div style="text-align:center;padding:12px;color:${r.success ? 'var(--gold-bright)' : 'var(--blood-bright)'};font-style:italic">
-        ${r.success ? 'Атака отбита. Сердце спокойно.' : 'Искушение проникло в город...'}
-      </div>
+      <div style="text-align:center;padding:12px;color:${textColor};font-style:italic">${text}</div>
     `;
     return;
   }
@@ -497,19 +610,38 @@ function renderTemptation() {
   if (!state.currentTemptation) { panel.innerHTML = `<div class="no-temptation">—</div>`; return; }
 
   const t = state.currentTemptation;
-  const sufficient = defense >= t.power;
+  const color = QUARTER_COLORS[t.quarter];
+  const defense = state.played.reduce((s, c) => s + effectiveLight(c, t.quarter), 0);
+  const needMin = t.power;
+  const needMax = t.power + 1;
+  const isExact = defense >= needMin && defense <= needMax;
+  const isPride = defense > needMax;
+
+  const valueClass = isExact ? 'sufficient' : (isPride ? 'pride' : '');
+  const hint = isExact
+    ? '<div class="ready-msg">✦ Точно! Можно отражать ✦</div>'
+    : isPride
+      ? '<div class="ready-msg" style="color:var(--text-dim)">◈ Перебор — гордыня (только +1 карта)</div>'
+      : `<div class="ready-msg" style="color:var(--blood-bright)">Нужно ${needMin}–${needMax} ✦</div>`;
+
   panel.innerHTML = `
     <div class="temptation-card">
       <div class="arabic">${t.arabic}</div>
       <div class="name">${t.name}</div>
       <div class="desc">${t.desc}</div>
-      <div class="power">Сила: <strong>${t.power}</strong> · Цель: ${QUARTER_NAMES[t.quarter]}</div>
+      <div class="power">
+        Цель: <span style="color:${color.hex}">${QUARTER_NAMES[t.quarter]}</span>
+        <span class="color-swatch" style="background:${color.hex}"></span>
+      </div>
+      <div class="power" style="margin-top:4px">
+        Точный диапазон: <strong style="color:${color.hex}">${needMin}–${needMax}</strong> ✦
+      </div>
     </div>
     <div class="defense-pool">
-      <div class="label">Защита</div>
-      <div class="value ${sufficient ? 'sufficient' : ''}">${defense} / ${t.power}</div>
+      <div class="label">Защита (${color.name})</div>
+      <div class="value ${valueClass}">${defense} ✦</div>
     </div>
-    ${sufficient ? '<div class="ready-msg">✦ Можно отражать атаку! ✦</div>' : ''}
+    ${hint}
   `;
 }
 
@@ -535,22 +667,22 @@ function renderActions() {
 
   const helpBtn = document.createElement('button');
   helpBtn.className = 'btn';
-  helpBtn.disabled = state.baraka < 2;
-  helpBtn.innerHTML = 'Помочь ближнему <span class="cost">2 ✧</span>';
+  helpBtn.disabled = state.baraka < 2 || state.ap < AP_ACTION;
+  helpBtn.innerHTML = `Помочь ближнему <span class="cost">2 ✧ · ${AP_ACTION} ОД</span>`;
   helpBtn.onclick = helpNeighbor;
   box.appendChild(helpBtn);
 
   const zikrBtn = document.createElement('button');
   zikrBtn.className = 'btn';
-  zikrBtn.disabled = state.baraka < 1 || state.hand.length === 0;
-  zikrBtn.innerHTML = 'Зикр <span class="cost">1 ✧ + карта</span>';
+  zikrBtn.disabled = state.baraka < 1 || state.hand.length === 0 || state.ap < AP_ACTION;
+  zikrBtn.innerHTML = `Зикр <span class="cost">1 ✧ · ${AP_ACTION} ОД + карта</span>`;
   zikrBtn.onclick = performZikr;
   box.appendChild(zikrBtn);
 
   const karinBtn = document.createElement('button');
   karinBtn.className = 'btn';
-  karinBtn.disabled = state.baraka < 2;
-  karinBtn.innerHTML = 'Борьба с Карином <span class="cost">2 ✧</span>';
+  karinBtn.disabled = state.baraka < 2 || state.ap < AP_ACTION;
+  karinBtn.innerHTML = `Борьба с Карином <span class="cost">2 ✧ · ${AP_ACTION} ОД</span>`;
   karinBtn.onclick = fightKarin;
   box.appendChild(karinBtn);
 }
@@ -559,20 +691,56 @@ function renderHand() {
   const hand = document.getElementById('hand');
   hand.innerHTML = '';
 
+  const targetQ = state.currentTemptation && state.phase === 'temptation'
+    ? state.currentTemptation.quarter : null;
+
   state.hand.forEach(c => {
     const el = document.createElement('div');
     el.className = 'virtue-card';
-    el.innerHTML = `<div class="v-arabic">${c.arabic}</div><div class="v-name">${c.name}</div><div class="v-light">${c.light}</div>`;
+    el.dataset.q = c.quarter;
+
+    const matches = !targetQ || c.quarter === targetQ;
+
+    el.innerHTML = `
+      <div class="v-arabic">${c.arabic}</div>
+      <div class="v-name">${c.name}</div>
+      <div class="v-light">${c.light}</div>
+    `;
+
+    if (targetQ && !matches) {
+      el.classList.add('not-matching');
+      const pen = document.createElement('div');
+      pen.className = 'v-penalty';
+      pen.textContent = '−1';
+      el.appendChild(pen);
+    }
+
     el.onclick = () => playCard(c.uid);
-    el.style.opacity = state.phase === 'temptation' ? '1' : '0.45';
-    el.style.pointerEvents = state.phase === 'temptation' ? 'auto' : 'none';
+    const canPlay = state.phase === 'temptation' && state.ap >= AP_CARD;
+    el.style.pointerEvents = canPlay ? 'auto' : 'none';
+    el.style.opacity = canPlay ? '1' : '0.4';
     hand.appendChild(el);
   });
 
   state.played.forEach(c => {
     const el = document.createElement('div');
     el.className = 'virtue-card played';
-    el.innerHTML = `<div class="v-arabic">${c.arabic}</div><div class="v-name">${c.name}</div><div class="v-light">${c.light}</div>`;
+    el.dataset.q = c.quarter;
+
+    const matches = !targetQ || c.quarter === targetQ;
+    const eff = effectiveLight(c, targetQ);
+
+    let lightHtml = `${eff}`;
+    if (!matches && eff !== c.light) {
+      lightHtml = `${eff}<span class="v-base">${c.light}</span>`;
+    }
+
+    el.innerHTML = `
+      <div class="v-arabic">${c.arabic}</div>
+      <div class="v-name">${c.name}</div>
+      <div class="v-light">${lightHtml}</div>
+    `;
+
     el.onclick = () => unplayCard(c.uid);
     hand.appendChild(el);
   });
@@ -581,10 +749,14 @@ function renderHand() {
     hand.innerHTML = '<div style="color:var(--text-dim);font-style:italic;padding:16px">— Рука пуста —</div>';
   }
 
-  document.getElementById('handLabel').textContent =
-    state.phase === 'temptation'
-      ? `Добродетели (${state.hand.length}/${HAND_LIMIT}) — нажмите, чтобы применить`
-      : 'Добродетели — сейчас недоступны';
+  if (state.phase === 'temptation' && state.currentTemptation) {
+    const colorName = QUARTER_COLORS[state.currentTemptation.quarter].name;
+    document.getElementById('handLabel').textContent =
+      `Добродетели (${state.hand.length}/${HAND_LIMIT}) · ОД: ${state.ap} · нужен цвет: ${colorName}`;
+  } else {
+    document.getElementById('handLabel').textContent =
+      `Добродетели (${state.hand.length}/${HAND_LIMIT}) · ОД: ${state.ap}`;
+  }
 }
 
 function renderLog() {
@@ -602,7 +774,6 @@ function renderLog() {
 // ── Точка входа ──
 (function () {
   if (hasSavedGame() && loadGame()) {
-    // Есть сохранение — предложить продолжить
     const oc = document.getElementById('overlayContent');
     oc.innerHTML = `
       <h2>Продолжить игру?</h2>
@@ -624,7 +795,7 @@ function renderLog() {
       initState();
     };
   } else {
-    initState();  // вызовет startCycle() → renderAll()
+    initState();
   }
 })();
 </script>
