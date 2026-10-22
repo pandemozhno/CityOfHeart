@@ -1,0 +1,19 @@
+{
+  "name": "cityofheart",
+  "version": "1.0.0",
+  "description": "BismiLlah — мусульманская игра о Прямом Пути (Город Сердца)",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "serve . -l 3000",
+    "dev": "serve . -l 3000",
+    "build": "node build.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": ["game", "islam", "sufism", "ibn-arabi", "browser-game"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

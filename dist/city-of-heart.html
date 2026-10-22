@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مدينة القلب — Город Сердца</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0605;--surface:#15100d;--surface-2:#1e1611;
+  --gold:#c9a227;--gold-dim:#8b7220;--gold-bright:#e8c04a;
+  --text:#e8dcc8;--text-dim:#a89880;
+  --blood:#8b1a1a;--blood-bright:#c83030;
+  --green:#4a7a4a;--border:#2a2018;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse at top,rgba(201,162,39,.04) 0%,transparent 60%),radial-gradient(ellipse at bottom,rgba(139,26,26,.05) 0%,transparent 60%);
+}
+#app{max-width:1300px;margin:0 auto;padding:10px;min-height:100vh;display:flex;flex-direction:column;gap:10px}
+header{position:relative;text-align:center;padding:4px 0 10px;border-bottom:1px solid var(--border)}
+header h1{font-family:'Amiri',serif;font-size:1.9rem;color:var(--gold);letter-spacing:2px;text-shadow:0 0 20px rgba(201,162,39,.3)}
+header .subtitle{color:var(--text-dim);font-size:.72rem;letter-spacing:8px;text-transform:uppercase;margin-top:2px}
+.help-btn{position:absolute;right:0;top:2px;width:32px;height:32px;border-radius:50%;border:1px solid var(--gold-dim);background:var(--surface);color:var(--gold-bright);font-size:1.1rem;cursor:pointer;font-family:'Amiri',serif}
+.stats-bar{display:flex;justify-content:center;flex-wrap:wrap;gap:20px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-size:.95rem}
+.stat-label{color:var(--text-dim)}
+.stat-value{color:var(--gold-bright);font-weight:700;font-family:'Amiri',serif;font-size:1.1rem}
+
+.main-grid{display:grid;grid-template-columns:1fr 400px;grid-template-areas:"city tempt" "city actions" "hand hand" "log log";gap:10px;flex:1}
+.city-panel{grid-area:city;display:grid;grid-template-areas:". razum ." "voobrazhenie heart gnev" ". zhelanie .";grid-template-columns:1fr 1.3fr 1fr;grid-template-rows:1fr 1.3fr 1fr;gap:10px;min-height:400px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.temptation-panel{grid-area:tempt}
+.actions-panel{grid-area:actions}
+.hand-panel{grid-area:hand}
+.log-panel{grid-area:log}
+
+@media(max-width:900px){
+  .main-grid{display:flex;flex-direction:column}
+  .temptation-panel{order:1}
+  .hand-panel{order:2}
+  .actions-panel{order:3}
+  .city-panel{order:4;min-height:320px}
+  .log-panel{order:5}
+}
+
+.quarter{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:all .3s}
+.quarter .arabic{font-family:'Amiri',serif;font-size:1.5rem;color:var(--gold);z-index:1;transition:all .3s}
+.quarter .name{font-size:.72rem;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;z-index:1;margin-top:2px}
+.quarter[data-q="razum"]{grid-area:razum}.quarter[data-q="razum"] .arabic{color:#7aaac8}
+.quarter[data-q="voobrazhenie"]{grid-area:voobrazhenie}.quarter[data-q="voobrazhenie"] .arabic{color:#a07ac8}
+.quarter[data-q="gnev"]{grid-area:gnev}.quarter[data-q="gnev"] .arabic{color:#c87070}
+.quarter[data-q="zhelanie"]{grid-area:zhelanie}.quarter[data-q="zhelanie"] .arabic{color:#c8a070}
+.quarter.targeted{border-color:var(--blood-bright);background:linear-gradient(160deg,#2a1210,#1a0808);animation:pulse-red 2s infinite}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 12px rgba(200,48,48,.4)}50%{box-shadow:0 0 26px rgba(200,48,48,.75)}}
+.tokens{display:flex;gap:3px;margin-top:5px;z-index:1;min-height:8px}
+.token{width:9px;height:9px;border-radius:50%;background:var(--blood-bright);box-shadow:0 0 6px var(--blood-bright);animation:fadeIn .4s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+.heart{grid-area:heart;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px}
+.heart-orb{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#d4a248,#6b4810);box-shadow:0 0 40px rgba(201,162,39,.5),0 0 80px rgba(201,162,39,.15),inset 0 0 20px rgba(255,220,140,.4);animation:heartbeat 2s ease-in-out infinite;display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:2rem;color:rgba(255,235,180,.95);margin-bottom:10px;transition:all .5s}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.06)}30%{transform:scale(1)}45%{transform:scale(1.04)}}
+.heart.dark .heart-orb{background:radial-gradient(circle at 30% 30%,#4a2020,#1a0808);box-shadow:0 0 30px rgba(139,26,26,.5),inset 0 0 20px rgba(60,10,10,.5);animation:none;color:#6a3030}
+.path-label{font-size:.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px}
+.path-value{font-family:'Amiri',serif;font-size:1.4rem;color:var(--gold-bright);font-weight:700}
+.path-value.negative{color:var(--blood-bright)}
+.path-track{width:100%;max-width:160px;height:7px;background:#2a1414;border-radius:4px;margin-top:5px;position:relative;border:1px solid var(--border)}
+.path-fill{position:absolute;top:0;bottom:0;transition:all .5s ease;border-radius:4px}
+.path-fill.positive{left:50%;background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright));box-shadow:0 0 8px var(--gold)}
+.path-fill.negative{right:50%;background:linear-gradient(270deg,var(--blood-bright),#4a1010);box-shadow:0 0 8px var(--blood-bright)}
+.path-center{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:var(--gold-dim);transform:translateX(-50%)}
+
+.temptation-card{background:linear-gradient(135deg,#2a1210,#1a0a08);border:1px solid var(--blood);border-radius:8px;padding:12px;position:relative;overflow:hidden}
+.temptation-card .arabic{font-family:'Amiri',serif;font-size:1.6rem;color:var(--blood-bright);text-align:center}
+.temptation-card .name{text-align:center;font-size:1rem;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.temptation-card .desc{text-align:center;font-size:.8rem;color:var(--text-dim);font-style:italic;margin-bottom:6px}
+.temptation-card .power{text-align:center;font-size:.85rem;color:var(--text-dim)}
+.temptation-card .power strong{color:var(--blood-bright);font-size:1.25rem;font-family:'Amiri',serif}
+.defense-pool{text-align:center;padding:8px;background:var(--surface-2);border-radius:6px;border:1px solid var(--border);margin-top:8px}
+.defense-pool .label{font-size:.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px}
+.defense-pool .value{font-family:'Amiri',serif;font-size:1.5rem;color:var(--gold-bright);font-weight:700}
+.defense-pool .value.sufficient{color:#7ac07a;text-shadow:0 0 10px #4a7a4a}
+.ready-msg{text-align:center;color:#7ac07a;font-weight:600;margin-top:6px;font-size:.95rem;letter-spacing:1px}
+.no-temptation{text-align:center;padding:24px 16px;color:var(--text-dim);font-style:italic;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+
+.actions-panel{display:flex;flex-direction:column;gap:6px}
+.btn{font-family:'Cormorant Garamond',serif;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:4px;cursor:pointer;font-size:.95rem;transition:all .2s;text-align:left;display:flex;justify-content:space-between;align-items:center}
+.btn:hover:not(:disabled){background:var(--surface);border-color:var(--gold-dim);transform:translateX(2px)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn .cost{color:var(--gold);font-size:.78rem}
+.btn.primary{background:linear-gradient(135deg,#4a3a10,#2a1e08);border-color:var(--gold-dim);color:var(--gold-bright);font-weight:600;justify-content:center}
+.btn.primary:hover:not(:disabled){background:linear-gradient(135deg,#6a4a10,#3a2e08);box-shadow:0 0 15px rgba(201,162,39,.3)}
+
+.log-panel{flex:1;min-height:80px;max-height:180px;overflow-y:auto;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.82rem;line-height:1.5}
+.log-entry{padding:2px 0;border-bottom:1px solid rgba(42,32,24,.4);animation:fadeIn .3s}
+.log-entry.good{color:#8ac08a}.log-entry.bad{color:#e06060}.log-entry.neutral{color:var(--text-dim)}.log-entry.gold{color:var(--gold-bright);font-weight:600}
+
+.hand-panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px}
+.hand-label{font-size:.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.hand{display:flex;gap:6px;flex-wrap:wrap;min-height:110px}
+.virtue-card{width:88px;height:118px;background:linear-gradient(160deg,#2a2418,#1a160e);border:1px solid var(--gold-dim);border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;cursor:pointer;transition:all .2s;user-select:none}
+.virtue-card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 6px 20px rgba(201,162,39,.2)}
+.virtue-card.played{border-color:var(--gold-bright);background:linear-gradient(160deg,#4a3a18,#2a2008);box-shadow:0 0 20px rgba(232,192,74,.4);transform:translateY(-6px)}
+.virtue-card .v-arabic{font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold)}
+.virtue-card .v-name{font-size:.72rem;color:var(--text);text-align:center;line-height:1.15}
+.virtue-card .v-light{font-family:'Amiri',serif;font-size:1rem;color:var(--gold-bright);font-weight:700}
+.virtue-card .v-light::before{content:'✦ ';font-size:.65rem}
+@media(max-width:900px){
+  .virtue-card{width:72px;height:98px}
+  .virtue-card .v-arabic{font-size:.95rem}
+  .virtue-card .v-name{font-size:.62rem}
+  .virtue-card .v-light{font-size:.88rem}
+}
+
+.overlay{position:fixed;inset:0;background:rgba(5,3,2,.94);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(4px)}
+.overlay.hidden{display:none}
+.overlay-content{max-width:480px;width:100%;text-align:center;padding:24px;background:var(--surface);border:1px solid var(--gold-dim);border-radius:12px;box-shadow:0 0 60px rgba(201,162,39,.2);max-height:90vh;overflow-y:auto}
+.overlay-content h2{font-family:'Amiri',serif;color:var(--gold-bright);font-size:1.6rem;margin-bottom:12px}
+.overlay-content h2.loss{color:var(--blood-bright)}
+.overlay-content p{color:var(--text);margin-bottom:12px;line-height:1.5}
+.overlay-content .arabic-big{font-family:'Amiri',serif;font-size:2.6rem;color:var(--gold);margin:6px 0 12px}
+.overlay-content ul{text-align:left;margin:8px 0 16px 20px;line-height:1.6;color:var(--text)}
+.overlay-content li{margin-bottom:6px}
+.overlay-content .btn{margin-top:8px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>مدينة القلب</h1>
+    <div class="subtitle">Город Сердца</div>
+    <button class="help-btn" onclick="showHelp()" title="Правила">?</button>
+  </header>
+
+  <div class="stats-bar">
+    <div><span class="stat-label">Цикл</span> <span class="stat-value" id="cycleDisplay">1 / 7</span></div>
+    <div><span class="stat-label">Барака</span> <span class="stat-value" id="barakaDisplay">3</span></div>
+    <div><span class="stat-label">Прямой Путь</span> <span class="stat-value" id="pathDisplay">0</span></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="city-panel city" id="city">
+      <div class="quarter" data-q="razum"><div class="arabic">عقل</div><div class="name">Разум</div><div class="tokens" data-tokens="razum"></div></div>
+      <div class="quarter" data-q="voobrazhenie"><div class="arabic">خيال</div><div class="name">Воображение</div><div class="tokens" data-tokens="voobrazhenie"></div></div>
+      <div class="heart" id="heart">
+        <div class="heart-orb">♥</div>
+        <div class="path-label">Прямой Путь</div>
+        <div class="path-value" id="pathValue">0</div>
+        <div class="path-track"><div class="path-fill" id="pathFill" style="width:0%"></div><div class="path-center"></div></div>
+      </div>
+      <div class="quarter" data-q="gnev"><div class="arabic">غضب</div><div class="name">Гнев</div><div class="tokens" data-tokens="gnev"></div></div>
+      <div class="quarter" data-q="zhelanie"><div class="arabic">شهوة</div><div class="name">Желание</div><div class="tokens" data-tokens="zhelanie"></div></div>
+    </div>
+
+    <div class="temptation-panel" id="temptationPanel"></div>
+    <div class="actions-panel" id="actions"></div>
+    <div class="hand-panel">
+      <div class="hand-label" id="handLabel">Добродетели — нажмите, чтобы применить</div>
+      <div class="hand" id="hand"></div>
+    </div>
+    <div class="log-panel" id="log"></div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="overlay">
+  <div class="overlay-content" id="overlayContent"></div>
+</div>
+
+<script>
+// ── Данные игры: добродетели, искушения, константы ──
+
+const VIRTUES = [
+  { id: 'sabr',      name: 'Терпение',      arabic: 'صبر',    light: 2 },
+  { id: 'shukr',     name: 'Благодарность', arabic: 'شكر',    light: 2 },
+  { id: 'tawakkul',  name: 'Упование',      arabic: 'توكل',   light: 3 },
+  { id: 'ikhlas',    name: 'Искренность',   arabic: 'إخلاص',  light: 3 },
+  { id: 'zikr',      name: 'Память',        arabic: 'ذكر',    light: 2 },
+  { id: 'mahabbat',  name: 'Любовь',        arabic: 'محبة',   light: 3 },
+  { id: 'tawadu',    name: 'Смирение',      arabic: 'تواضع',  light: 2 },
+  { id: 'sidq',      name: 'Правдивость',   arabic: 'صدق',    light: 2 }
+];
+
+const TEMPTATIONS = [
+  { name: 'Гордыня',       arabic: 'كِبر', power: 4, quarter: 'razum',        desc: 'Мысль, что ты лучше других' },
+  { name: 'Зависть',       arabic: 'حسد',  power: 5, quarter: 'zhelanie',     desc: 'Желание чужого блага' },
+  { name: 'Гнев',          arabic: 'غضب',  power: 5, quarter: 'gnev',         desc: 'Ярость, требующая выхода' },
+  { name: 'Мечтательность',arabic: 'خيال', power: 3, quarter: 'voobrazhenie', desc: 'Уход в иллюзии' },
+  { name: 'Сребролюбие',   arabic: 'طمع',  power: 4, quarter: 'zhelanie',     desc: 'Жажда наживы' },
+  { name: 'Тщеславие',     arabic: 'رياء', power: 4, quarter: 'razum',        desc: 'Показная праведность' },
+  { name: 'Сомнение',      arabic: 'شك',   power: 4, quarter: 'voobrazhenie', desc: 'Подтачивает веру' },
+  { name: 'Отчаяние',      arabic: 'يأس',  power: 5, quarter: 'razum',        desc: 'Потеря надежды' },
+  { name: 'Похоть',        arabic: 'شهوة', power: 4, quarter: 'zhelanie',     desc: 'Слепая страсть' },
+  { name: 'Жестокость',    arabic: 'قسوة', power: 5, quarter: 'gnev',         desc: 'Черствость сердца' },
+  { name: 'Лень',          arabic: 'كسل',  power: 3, quarter: 'voobrazhenie', desc: 'Уклонение от усилия' },
+  { name: 'Уныние',        arabic: 'هم',   power: 4, quarter: 'razum',        desc: 'Тяжесть на сердце' }
+];
+
+const QUARTER_NAMES = {
+  razum: 'Разум',
+  gnev: 'Гнев',
+  zhelanie: 'Желание',
+  voobrazhenie: 'Воображение'
+};
+
+// Баланс
+const HAND_LIMIT = 10;      // максимум карт в руке
+const START_HAND = 5;       // стартовых карт
+const CARD_PER_CYCLE = 1;   // доход в начале цикла
+const CARD_ON_SUCCESS = 2;  // награда за отбитую атаку
+
+// Сохранение
+const SAVE_KEY = 'city-of-heart-save';
+const SAVE_VERSION = 1;
+</script>
+<script>
+// ── Состояние игры + сохранение ──
+
+let state = {};
+
+function initState() {
+  state = {
+    cycle: 1,
+    maxCycles: 7,
+    baraka: 3,
+    straightPath: 0,
+    hand: [],
+    played: [],
+    quarters: { razum: 0, gnev: 0, zhelanie: 0, voobrazhenie: 0 },
+    currentTemptation: null,
+    lastResult: null,
+    phase: 'temptation',
+    log: []
+  };
+  for (let i = 0; i < START_HAND; i++) drawCard(false);
+  startCycle();
+}
+
+function drawCard(log = false) {
+  if (state.hand.length >= HAND_LIMIT) return false;
+  const v = VIRTUES[Math.floor(Math.random() * VIRTUES.length)];
+  state.hand.push({ ...v, uid: Date.now() + Math.random() });
+  if (log) addLog(`Получена добродетель: ${v.name}`, 'neutral');
+  return true;
+}
+
+function addLog(text, type = 'neutral') {
+  state.log.unshift({ text, type });
+  if (state.log.length > 50) state.log.pop();
+}
+
+function rand(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// ── Сохранение/загрузка ──
+function saveGame() {
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({ version: SAVE_VERSION, state }));
+  } catch (e) { /* private mode / quota — игнорируем */ }
+}
+
+function loadGame() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data || data.version !== SAVE_VERSION || !data.state) return false;
+    state = data.state;
+    return true;
+  } catch (e) { return false; }
+}
+
+function hasSavedGame() {
+  try { return !!localStorage.getItem(SAVE_KEY); } catch (e) { return false; }
+}
+
+function clearSave() {
+  try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+}
+</script>
+<script>
+// ── Игровая логика: действия игрока и ходы ──
+
+function startCycle() {
+  state.played = [];
+  state.lastResult = null;
+  for (let i = 0; i < CARD_PER_CYCLE; i++) drawCard(false);
+  const t = rand(TEMPTATIONS);
+  state.currentTemptation = t;
+  state.phase = 'temptation';
+  addLog(`— Цикл ${state.cycle} —`, 'gold');
+  addLog(`Искушение: ${t.name} атакует ${QUARTER_NAMES[t.quarter]}`, 'bad');
+  renderAll();
+}
+
+function resolveTemptation() {
+  if (state.phase !== 'temptation') return;
+  const defense = state.played.reduce((s, c) => s + c.light, 0);
+  const t = state.currentTemptation;
+  const success = defense >= t.power;
+
+  if (success) {
+    state.baraka += 1;
+    for (let i = 0; i < CARD_ON_SUCCESS; i++) drawCard(false);
+    addLog(`✓ Отбито: ${t.name} (${defense} ✦ против ${t.power}) — +1 Барака, +${CARD_ON_SUCCESS} карты`, 'good');
+  } else {
+    state.straightPath -= 1;
+    state.quarters[t.quarter] = Math.min(3, state.quarters[t.quarter] + 1);
+    addLog(`✗ Пробито: ${t.name} (${defense} ✦ против ${t.power}) — −1 Прямой Путь`, 'bad');
+  }
+
+  state.lastResult = { success, temptation: t, defense };
+  state.played = [];
+  state.phase = 'resolved';
+
+  if (checkEnd()) return;
+  renderAll();
+}
+
+function nextCycle() {
+  if (state.phase === 'over') return;
+  state.cycle++;
+  if (state.cycle > state.maxCycles) { checkEnd(); return; }
+  startCycle();
+}
+
+function checkEnd() {
+  if (state.straightPath <= -7) { endGame(false, 'Сердце омрачено. Прямой Путь потерян.'); return true; }
+  if (state.straightPath >= 7)  { endGame(true,  'Сердце озарено. Достигнут покой души.'); return true; }
+  if (state.cycle > state.maxCycles) {
+    if (state.straightPath >= -3) endGame(true,  'Ты прошёл семь циклов, сохранив сердце.');
+    else                          endGame(false, 'Семь циклов прошли, но сердце помрачилось.');
+    return true;
+  }
+  return false;
+}
+
+function endGame(won, text) {
+  state.phase = 'over';
+  renderAll();
+  const oc = document.getElementById('overlayContent');
+  oc.innerHTML = `
+    <div class="arabic-big">${won ? 'سلام' : 'ظلمة'}</div>
+    <h2 class="${won ? '' : 'loss'}">${won ? 'Победа' : 'Поражение'}</h2>
+    <p style="text-align:center">${text}</p>
+    <p style="color:var(--text-dim);font-size:.9rem;text-align:center">Прямой Путь: ${state.straightPath > 0 ? '+' : ''}${state.straightPath}</p>
+    <button class="btn primary" onclick="restart()">Начать заново</button>
+  `;
+  document.getElementById('overlay').classList.remove('hidden');
+}
+
+function restart() {
+  document.getElementById('overlay').classList.add('hidden');
+  clearSave();
+  initState();
+}
+
+function playCard(uid) {
+  if (state.phase !== 'temptation') return;
+  const idx = state.hand.findIndex(c => c.uid === uid);
+  if (idx === -1) return;
+  state.played.push(state.hand.splice(idx, 1)[0]);
+  renderAll();
+}
+
+function unplayCard(uid) {
+  const idx = state.played.findIndex(c => c.uid === uid);
+  if (idx === -1) return;
+  if (state.hand.length >= HAND_LIMIT) return;
+  state.hand.push(state.played.splice(idx, 1)[0]);
+  renderAll();
+}
+
+function helpNeighbor() {
+  if (state.phase !== 'temptation' || state.baraka < 2) return;
+  state.baraka -= 2;
+  state.straightPath += 1;
+  drawCard(false);
+  addLog('Помощь ближнему: +1 Прямой Путь, +1 карта', 'good');
+  if (checkEnd()) return;
+  renderAll();
+}
+
+function performZikr() {
+  if (state.phase !== 'temptation' || state.baraka < 1 || state.hand.length === 0) return;
+  state.baraka -= 1;
+  const idx = Math.floor(Math.random() * state.hand.length);
+  const lost = state.hand.splice(idx, 1)[0];
+  const withTokens = Object.keys(state.quarters).filter(q => state.quarters[q] > 0);
+  if (withTokens.length > 0) {
+    const q = rand(withTokens);
+    state.quarters[q]--;
+    addLog(`Зикр: тень убрана из «${QUARTER_NAMES[q]}» (сброшена «${lost.name}»)`, 'good');
+  } else {
+    state.straightPath += 1;
+    addLog(`Зикр: сердце просветлело (+1)`, 'good');
+  }
+  if (checkEnd()) return;
+  renderAll();
+}
+
+function fightKarin() {
+  if (state.phase !== 'temptation' || state.baraka < 2) return;
+  state.baraka -= 2;
+  const roll = Math.floor(Math.random() * 6) + 1;
+  if (roll >= 4) {
+    state.straightPath += 1;
+    addLog(`Борьба с Карином: выпало ${roll} — победа! +1 Прямой Путь`, 'good');
+  } else {
+    addLog(`Борьба с Карином: выпало ${roll} — Карин ранил душу`, 'bad');
+  }
+  if (checkEnd()) return;
+  renderAll();
+}
+
+function showHelp() {
+  const oc = document.getElementById('overlayContent');
+  oc.innerHTML = `
+    <h2>Как играть</h2>
+    <ul>
+      <li><b>1.</b> Сверху появилось <b>искушение</b> — у него есть <b>Сила</b> и <b>цель</b> (квартал).</li>
+      <li><b>2.</b> Ниже — <b>карты Добродетелей</b>. Нажимайте на них — их «свет» (число со ✦) идёт в «Защиту».</li>
+      <li><b>3.</b> Когда <b>Защита ≥ Силы</b> — нажмите <b>«Отразить атаку»</b>. Успех: +1 Барака, +2 карты. Провал: −1 Прямой Путь и тёмный жетон.</li>
+      <li><b>4.</b> Кнопки <b>«Помочь ближнему»</b>, <b>«Зикр»</b>, <b>«Борьба с Карином»</b> — полезные действия за Бараку.</li>
+      <li><b>5.</b> Всего <b>7 циклов</b>. Победа — если Прямой Путь не упал ниже −3. Досрочно: до +7 (озарение) или −7 (поражение).</li>
+    </ul>
+    <button class="btn primary" onclick="document.getElementById('overlay').classList.add('hidden')">Понятно</button>
+  `;
+  document.getElementById('overlay').classList.remove('hidden');
+}
+</script>
+<script>
+// ── Отрисовка интерфейса ──
+
+function renderAll() {
+  renderStats();
+  renderCity();
+  renderTemptation();
+  renderActions();
+  renderHand();
+  renderLog();
+  saveGame();
+}
+
+function renderStats() {
+  document.getElementById('cycleDisplay').textContent = `${Math.min(state.cycle, state.maxCycles)} / ${state.maxCycles}`;
+  document.getElementById('barakaDisplay').textContent = state.baraka;
+  const p = state.straightPath;
+  const txt = p > 0 ? '+' + p : (p < 0 ? String(p) : '0');
+  document.getElementById('pathDisplay').textContent = txt;
+  document.getElementById('pathValue').textContent = txt;
+  document.getElementById('pathValue').className = 'path-value' + (p < 0 ? ' negative' : '');
+  const fill = document.getElementById('pathFill');
+  fill.style.width = (Math.abs(p) / 7 * 50) + '%';
+  fill.className = 'path-fill ' + (p >= 0 ? 'positive' : 'negative');
+  document.getElementById('heart').className = 'heart' + (p < 0 ? ' dark' : '');
+}
+
+function renderCity() {
+  document.querySelectorAll('.quarter').forEach(q => q.classList.remove('targeted'));
+  if (state.currentTemptation && state.phase === 'temptation') {
+    const q = document.querySelector(`.quarter[data-q="${state.currentTemptation.quarter}"]`);
+    if (q) q.classList.add('targeted');
+  }
+  Object.keys(state.quarters).forEach(q => {
+    const cont = document.querySelector(`[data-tokens="${q}"]`);
+    cont.innerHTML = '';
+    for (let i = 0; i < state.quarters[q]; i++) {
+      const t = document.createElement('div');
+      t.className = 'token';
+      cont.appendChild(t);
+    }
+  });
+}
+
+function renderTemptation() {
+  const panel = document.getElementById('temptationPanel');
+  const defense = state.played.reduce((s, c) => s + c.light, 0);
+
+  if (state.phase === 'over') { panel.innerHTML = `<div class="no-temptation">Игра завершена</div>`; return; }
+
+  if (state.phase === 'resolved' && state.lastResult) {
+    const r = state.lastResult;
+    panel.innerHTML = `
+      <div class="temptation-card" style="border-color:${r.success ? 'var(--gold-dim)' : 'var(--blood)'}">
+        <div class="arabic" style="color:${r.success ? 'var(--gold)' : 'var(--blood-bright)'}">${r.temptation.arabic}</div>
+        <div class="name">${r.temptation.name}</div>
+        <div class="desc">${r.defense} ✦ против ${r.temptation.power}</div>
+      </div>
+      <div style="text-align:center;padding:12px;color:${r.success ? 'var(--gold-bright)' : 'var(--blood-bright)'};font-style:italic">
+        ${r.success ? 'Атака отбита. Сердце спокойно.' : 'Искушение проникло в город...'}
+      </div>
+    `;
+    return;
+  }
+
+  if (!state.currentTemptation) { panel.innerHTML = `<div class="no-temptation">—</div>`; return; }
+
+  const t = state.currentTemptation;
+  const sufficient = defense >= t.power;
+  panel.innerHTML = `
+    <div class="temptation-card">
+      <div class="arabic">${t.arabic}</div>
+      <div class="name">${t.name}</div>
+      <div class="desc">${t.desc}</div>
+      <div class="power">Сила: <strong>${t.power}</strong> · Цель: ${QUARTER_NAMES[t.quarter]}</div>
+    </div>
+    <div class="defense-pool">
+      <div class="label">Защита</div>
+      <div class="value ${sufficient ? 'sufficient' : ''}">${defense} / ${t.power}</div>
+    </div>
+    ${sufficient ? '<div class="ready-msg">✦ Можно отражать атаку! ✦</div>' : ''}
+  `;
+}
+
+function renderActions() {
+  const box = document.getElementById('actions');
+  box.innerHTML = '';
+  if (state.phase === 'over') return;
+
+  if (state.phase === 'resolved') {
+    const b = document.createElement('button');
+    b.className = 'btn primary';
+    b.innerHTML = state.cycle >= state.maxCycles ? 'Завершить игру' : 'Следующий цикл →';
+    b.onclick = nextCycle;
+    box.appendChild(b);
+    return;
+  }
+
+  const attackBtn = document.createElement('button');
+  attackBtn.className = 'btn primary';
+  attackBtn.innerHTML = 'Отразить атаку ✦';
+  attackBtn.onclick = resolveTemptation;
+  box.appendChild(attackBtn);
+
+  const helpBtn = document.createElement('button');
+  helpBtn.className = 'btn';
+  helpBtn.disabled = state.baraka < 2;
+  helpBtn.innerHTML = 'Помочь ближнему <span class="cost">2 ✧</span>';
+  helpBtn.onclick = helpNeighbor;
+  box.appendChild(helpBtn);
+
+  const zikrBtn = document.createElement('button');
+  zikrBtn.className = 'btn';
+  zikrBtn.disabled = state.baraka < 1 || state.hand.length === 0;
+  zikrBtn.innerHTML = 'Зикр <span class="cost">1 ✧ + карта</span>';
+  zikrBtn.onclick = performZikr;
+  box.appendChild(zikrBtn);
+
+  const karinBtn = document.createElement('button');
+  karinBtn.className = 'btn';
+  karinBtn.disabled = state.baraka < 2;
+  karinBtn.innerHTML = 'Борьба с Карином <span class="cost">2 ✧</span>';
+  karinBtn.onclick = fightKarin;
+  box.appendChild(karinBtn);
+}
+
+function renderHand() {
+  const hand = document.getElementById('hand');
+  hand.innerHTML = '';
+
+  state.hand.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'virtue-card';
+    el.innerHTML = `<div class="v-arabic">${c.arabic}</div><div class="v-name">${c.name}</div><div class="v-light">${c.light}</div>`;
+    el.onclick = () => playCard(c.uid);
+    el.style.opacity = state.phase === 'temptation' ? '1' : '0.45';
+    el.style.pointerEvents = state.phase === 'temptation' ? 'auto' : 'none';
+    hand.appendChild(el);
+  });
+
+  state.played.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'virtue-card played';
+    el.innerHTML = `<div class="v-arabic">${c.arabic}</div><div class="v-name">${c.name}</div><div class="v-light">${c.light}</div>`;
+    el.onclick = () => unplayCard(c.uid);
+    hand.appendChild(el);
+  });
+
+  if (state.hand.length === 0 && state.played.length === 0) {
+    hand.innerHTML = '<div style="color:var(--text-dim);font-style:italic;padding:16px">— Рука пуста —</div>';
+  }
+
+  document.getElementById('handLabel').textContent =
+    state.phase === 'temptation'
+      ? `Добродетели (${state.hand.length}/${HAND_LIMIT}) — нажмите, чтобы применить`
+      : 'Добродетели — сейчас недоступны';
+}
+
+function renderLog() {
+  const log = document.getElementById('log');
+  log.innerHTML = '';
+  state.log.slice(0, 20).forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'log-entry ' + e.type;
+    div.textContent = e.text;
+    log.appendChild(div);
+  });
+}
+</script>
+<script>
+// ── Точка входа ──
+(function () {
+  if (hasSavedGame() && loadGame()) {
+    // Есть сохранение — предложить продолжить
+    const oc = document.getElementById('overlayContent');
+    oc.innerHTML = `
+      <h2>Продолжить игру?</h2>
+      <p style="text-align:center">Найдено сохранение: цикл ${state.cycle} / ${state.maxCycles}</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+        <button class="btn primary" id="btn-continue">Продолжить</button>
+        <button class="btn" id="btn-new">Новая игра</button>
+      </div>
+    `;
+    document.getElementById('overlay').classList.remove('hidden');
+
+    document.getElementById('btn-continue').onclick = () => {
+      document.getElementById('overlay').classList.add('hidden');
+      renderAll();
+    };
+    document.getElementById('btn-new').onclick = () => {
+      document.getElementById('overlay').classList.add('hidden');
+      clearSave();
+      initState();
+    };
+  } else {
+    initState();  // вызовет startCycle() → renderAll()
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مدينة القلب — Город Сердца</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>مدينة القلب</h1>
+    <div class="subtitle">Город Сердца</div>
+    <button class="help-btn" onclick="showHelp()" title="Правила">?</button>
+  </header>
+
+  <div class="stats-bar">
+    <div><span class="stat-label">Цикл</span> <span class="stat-value" id="cycleDisplay">1 / 7</span></div>
+    <div><span class="stat-label">Барака</span> <span class="stat-value" id="barakaDisplay">3</span></div>
+    <div><span class="stat-label">ОД</span> <span class="stat-value" id="apDisplay">3 / 3</span></div>
+    <div><span class="stat-label">Прямой Путь</span> <span class="stat-value" id="pathDisplay">0</span></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="city-panel city" id="city">
+      <div class="quarter" data-q="razum">
+        <div class="arabic">عقل</div><div class="name">Разум</div>
+        <div class="tokens" data-tokens="razum"></div>
+      </div>
+      <div class="quarter" data-q="voobrazhenie">
+        <div class="arabic">خيال</div><div class="name">Воображение</div>
+        <div class="tokens" data-tokens="voobrazhenie"></div>
+      </div>
+      <div class="heart" id="heart">
+        <div class="heart-orb">♥</div>
+        <div class="path-label">Прямой Путь</div>
+        <div class="path-value" id="pathValue">0</div>
+        <div class="path-track"><div class="path-fill" id="pathFill" style="width:0%"></div><div class="path-center"></div></div>
+      </div>
+      <div class="quarter" data-q="gnev">
+        <div class="arabic">غضب</div><div class="name">Гнев</div>
+        <div class="tokens" data-tokens="gnev"></div>
+      </div>
+      <div class="quarter" data-q="zhelanie">
+        <div class="arabic">شهوة</div><div class="name">Желание</div>
+        <div class="tokens" data-tokens="zhelanie"></div>
+      </div>
+    </div>
+
+    <div class="temptation-panel" id="temptationPanel"></div>
+    <div class="actions-panel" id="actions"></div>
+    <div class="hand-panel">
+      <div class="hand-label" id="handLabel">Добродетели</div>
+      <div class="hand" id="hand"></div>
+    </div>
+    <div class="log-panel" id="log"></div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="overlay">
+  <div class="overlay-content" id="overlayContent"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
